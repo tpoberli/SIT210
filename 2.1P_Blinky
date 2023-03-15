@@ -1,0 +1,43 @@
+int ledPin = A5; // set the LED pin to D7
+int dotTime = 250; // blink every 500 milliseconds (0.5 seconds)
+int dashTime = 750; // blink every 500 milliseconds (0.5 seconds)
+int endTime = 500; // blink every 500 milliseconds (0.5 seconds)
+
+void dotLED() {
+  pinMode(ledPin, OUTPUT); // set the LED pin as an output
+  digitalWrite(ledPin, HIGH); // turn the LED on
+
+  delay(dotTime); // wait for the specified time
+
+  digitalWrite(ledPin, LOW); // turn the LED off
+  delay(endTime); // wait for the specified time
+}
+void dashLED() {
+  pinMode(ledPin, OUTPUT); // set the LED pin as an output
+  digitalWrite(ledPin, HIGH); // turn the LED on
+
+  delay(dashTime); // wait for the specified time
+
+  digitalWrite(ledPin, LOW); // turn the LED off
+  delay(endTime); // wait for the specified time
+}
+
+
+void setup() {
+  // nothing to do here
+}
+
+void loop() {
+  dashLED(); // T
+  
+  dotLED();dotLED();dotLED();dotLED(); // H
+  
+  dashLED();dashLED();dashLED(); // O
+  
+  dashLED();dashLED(); // M
+  
+  dotLED(); dashLED(); // A
+  
+  dotLED();dotLED();dotLED(); // S
+  
+}
