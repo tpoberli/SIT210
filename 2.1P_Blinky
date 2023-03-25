@@ -1,43 +1,62 @@
-int ledPin = A5; // set the LED pin to D7
-int dotTime = 250; // blink every 500 milliseconds (0.5 seconds)
-int dashTime = 750; // blink every 500 milliseconds (0.5 seconds)
-int endTime = 500; // blink every 500 milliseconds (0.5 seconds)
+int ledPin = A5; // set the LED pin to A5
+int ledPin2 = D7; // set the LED pin to D7
+int button = D5;
+int hPin = D1;
+int dotTime = 250; // blink for 250 milliseconds (0.25 seconds)
+int dashTime = 750; // blink for 750 milliseconds (0.75 seconds)
+int endTime = 500; // delay for 500 milliseconds (0.5 seconds)
+void blink(void);
+volatile int state = LOW;
+SYSTEM_THREAD(ENABLED);
 
-void dotLED() {
+void setup() {
   pinMode(ledPin, OUTPUT); // set the LED pin as an output
+  pinMode(ledPin2, OUTPUT); // set the LED pin as an output
+  pinMode(hPin, OUTPUT); // set the LED pin as an output
+  digitalWrite(hPin, HIGH); // turn the LED on
+  pinMode(button, INPUT_PULLDOWN);
+  attachInterrupt(button, blink, CHANGE, 1);
+}
+void blink()
+{
+  state = !state;
+}
+void dotLED() {
   digitalWrite(ledPin, HIGH); // turn the LED on
+  digitalWrite(ledPin2, HIGH); // turn the LED on
 
   delay(dotTime); // wait for the specified time
 
   digitalWrite(ledPin, LOW); // turn the LED off
+  digitalWrite(ledPin2, LOW); // turn the LED on
   delay(endTime); // wait for the specified time
+  Serial.println(state);
 }
+
 void dashLED() {
-  pinMode(ledPin, OUTPUT); // set the LED pin as an output
   digitalWrite(ledPin, HIGH); // turn the LED on
+  digitalWrite(ledPin2, HIGH); // turn the LED on
 
   delay(dashTime); // wait for the specified time
 
   digitalWrite(ledPin, LOW); // turn the LED off
+  digitalWrite(ledPin2, LOW); // turn the LED on
   delay(endTime); // wait for the specified time
-}
-
-
-void setup() {
-  // nothing to do here
+  Serial.println(state);
 }
 
 void loop() {
-  dashLED(); // T
-  
-  dotLED();dotLED();dotLED();dotLED(); // H
-  
-  dashLED();dashLED();dashLED(); // O
-  
-  dashLED();dashLED(); // M
-  
-  dotLED(); dashLED(); // A
-  
-  dotLED();dotLED();dotLED(); // S
-  
+    while (state == LOW) {
+      dashLED(); // T
+      
+      dotLED();dotLED();dotLED();dotLED(); // H
+      
+      dashLED();dashLED();dashLED(); // O
+      
+      dashLED();dashLED(); // M
+      
+      dotLED(); dashLED(); // A
+      
+      dotLED();dotLED();dotLED(); // S
+    }
 }
